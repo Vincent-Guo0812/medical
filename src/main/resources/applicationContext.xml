@@ -10,18 +10,13 @@
         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <!--xmlns:context="http://www.springframework.org/schema/context"-->
     <!--除了控制器都扫描，和SpringMVC相反-->
     <context:component-scan base-package="com.medical">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
     </context:component-scan>
     <!--Spring的配置文件，这里主要配置和业务逻辑有关的-->
     <!--数据源，事务控制。。-->
-
     <context:property-placeholder location="classpath:dbconfig.properties"/>
-    <!--<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:dbconfig.properties"/>
-    </bean>-->
     <bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
         <property name="driverClass" value="${jdbc.driverClass}"></property>
@@ -43,7 +38,40 @@
         <!--扫描所有dao接口的实现，加入到ioc容器中-->
         <property name="basePackage" value="com.medical.dao"></property>
     </bean>
-    <!--   -->
+
+
+
+    <!--shiro realm-->
+    <bean id="myRealm" class="com.medical.shiro.MyShiroRealm"/>
+    <!--安全管理-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"></property>
+    </bean>
+    <!--shiro 过滤器-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro过滤器的核心安全接口，这个属性是必须的-->
+        <property name="securityManager" ref="securityManager"/>
+        <!--身份认证失败，则跳转到登录页面的配置-->
+        <property name="loginUrl" value="index.jsp"/>
+        <!--权限认证失败，则跳转到指定页面-->
+        <property name="unauthorizedUrl" value="unauthorized.jsp"/>
+        <!-- Shiro连接约束配置，即过滤链的定义-->
+        <property name="filterChainDefinitions">
+            <value>
+
+                /main=anon
+                /admin=roles[admin]
+                /doctor=roles[user]
+                /read=perms["/read"]
+                /write=perms["/write"]
+
+            </value>
+        </property>
+    </bean>
+
+
+
+
 
     <!--事务控制的配置-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

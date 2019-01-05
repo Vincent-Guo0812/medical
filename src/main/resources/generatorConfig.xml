@@ -40,7 +40,10 @@
         <!--指定哪个表的生成策略-->
 
 
-        <table tableName="department" domainObjectName="Department" ></table>
+        <table tableName="shiro_doc_role" domainObjectName="ShiroDocRole" ></table>
+        <table tableName="doctor" domainObjectName="Doctor" ></table>
+
+
 
     </context>
 </generatorConfiguration>

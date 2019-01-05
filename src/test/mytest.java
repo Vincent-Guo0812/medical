@@ -1,6 +1,9 @@
 import com.medical.dao.DepartmentMapper;
+import com.medical.dao.DoctorMapper;
 import com.medical.pojo.Department;
+import com.medical.pojo.Doctor;
 import com.medical.service.DepartmentService;
+import com.medical.service.DoctorService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * ClassName:   mytest
@@ -24,6 +28,8 @@ public class mytest {
     private DepartmentMapper departmentMapper;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private DoctorService doctorService;
 
     @Test
     public void test(){
@@ -37,5 +43,17 @@ public class mytest {
        for(int i=0;i<departmentLis.size();i++){
            System.out.println(departmentLis.get(i).getName());
        }
+    }
+
+    @Test
+    public void  shiro(){
+  /*      Doctor d=doctorService.getDoctor(1);
+        System.out.println(d.getName());
+        Set<String> s=doctorService.getRoles(1);
+        System.out.println(s);*/
+        Set<String> set= doctorService.getPermissions(2);
+        for(String s1:set){
+            System.out.println(s1);
+        }
     }
 }

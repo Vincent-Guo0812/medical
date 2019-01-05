@@ -6,8 +6,6 @@ import com.medical.pojo.DepartmentExample;
 import com.medical.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.xml.ws.ServiceMode;
 import java.util.List;
 
 /**
