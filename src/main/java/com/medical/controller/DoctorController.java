@@ -1,9 +1,11 @@
 package com.medical.controller;
 
+import com.medical.dao.DoctorMapper;
 import com.medical.pojo.Doctor;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
@@ -16,27 +18,14 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class DoctorController {
+    @Autowired
+    private DoctorMapper doctorMapper;
 
     @RequestMapping("/main")
     public String toLogin(){
         return "login";
     }
-    @RequestMapping("/doctor")
-    public String toDoctor(){
-        return "doctor";
-    }
-    @RequestMapping("/admin")
-    public String toAdmin(){
-        return "admin";
-    }
-    @RequestMapping("/write")
-    public String write(){
-        return "write";
-    }
-    @RequestMapping("/read")
-    public String read(){
-        return "read";
-    }
+
 
     @RequestMapping("/login")
     public String login(Doctor doctor, HttpServletRequest request){
@@ -48,8 +37,10 @@ public class DoctorController {
         UsernamePasswordToken token=new UsernamePasswordToken(String.valueOf(doctor.getId()),doctor.getPassword());
         try{
             subject.login(token);
-            request.getSession().setAttribute("doctor",doctor);
-            return "success";
+            Doctor doctor1=doctorMapper.selectByPrimaryKey(doctor.getId());
+            request.getSession().setAttribute("doctor",doctor1);
+
+            return "main";
         }
         catch(Exception e){
             e.printStackTrace();
@@ -60,9 +51,9 @@ public class DoctorController {
 
     }
 
-    @RequestMapping("/logout")
+    @RequestMapping("/logOut")
     public String logout(HttpServletRequest request){
         request.getSession().removeAttribute("doctor");
-        return "index";
+        return "login";
     }
 }

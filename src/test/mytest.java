@@ -4,6 +4,8 @@ import com.medical.pojo.Department;
 import com.medical.pojo.Doctor;
 import com.medical.service.DepartmentService;
 import com.medical.service.DoctorService;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +57,12 @@ public class mytest {
         for(String s1:set){
             System.out.println(s1);
         }
+    }
+
+    @Test
+    public void md5(){
+        Md5Hash md5Hash=new Md5Hash("11","3",1024);
+        System.out.println(md5Hash.toString());
+
     }
 }

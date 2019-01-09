@@ -5,8 +5,10 @@ import com.medical.service.DoctorService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -28,15 +30,22 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String doctorId=(String) token.getPrincipal();//获取医生id
         Doctor doctor=doctorService.getDoctor(Integer.parseInt(doctorId));
+        String salt=String.valueOf(doctor.getId());
         if(doctor!=null){
-            AuthenticationInfo authcInfo =new SimpleAuthenticationInfo(doctor.getId(),doctor.getPassword(),"myRealm");
+            AuthenticationInfo authcInfo =new SimpleAuthenticationInfo(doctor.getId(),doctor.getPassword(),ByteSource.Util.bytes(salt),"myRealm");
            return authcInfo;
         }else{
             return null;
         }
-
+    }
+/*
+    注册的时候盐值加密，用username当作盐
+    public String md5(String pwd,String username){
+        Md5Hash md5Hash=new Md5Hash(pwd,username,1024);
+        return md5Hash.toString();
     }
 
+    */
     /**
      * @Description  为当前登录成功的用户授予权限和角色，已经登录成功了
      * @Date  2019/1/3 22:19
@@ -46,7 +55,9 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         Integer doctorId=(Integer) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo  authorizationInfo=new SimpleAuthorizationInfo();
+        // 获取医生的所有角色
         authorizationInfo.setRoles(doctorService.getRoles(doctorId));
+        // 获取医生的所有权限
         authorizationInfo.setStringPermissions(doctorService.getPermissions(doctorId));
         return authorizationInfo;
     }

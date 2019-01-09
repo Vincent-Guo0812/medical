@@ -41,8 +41,17 @@
 
 
 
-    <!--shiro realm-->
-    <bean id="myRealm" class="com.medical.shiro.MyShiroRealm"/>
+
+    <!-- shiro md5 加密 -->
+    <bean id="myRealm" class="com.medical.shiro.MyShiroRealm">
+        <!--验证方式-->
+        <property name="credentialsMatcher" >
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="MD5"></property>
+                <property name="hashIterations" value="1024"></property>
+            </bean>
+        </property>
+    </bean>
     <!--安全管理-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="myRealm"></property>
@@ -68,6 +77,8 @@
             </value>
         </property>
     </bean>
+
+
 
 
 
