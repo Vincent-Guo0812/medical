@@ -2,8 +2,10 @@ import com.medical.dao.DepartmentMapper;
 import com.medical.dao.DoctorMapper;
 import com.medical.pojo.Department;
 import com.medical.pojo.Doctor;
+import com.medical.pojo.Patient;
 import com.medical.service.DepartmentService;
 import com.medical.service.DoctorService;
+import com.medical.service.PatientService;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.junit.Test;
@@ -11,7 +13,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -32,6 +37,8 @@ public class mytest {
     private DepartmentService departmentService;
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    private PatientService patientService;
 
     @Test
     public void test(){
@@ -63,6 +70,14 @@ public class mytest {
     public void md5(){
         Md5Hash md5Hash=new Md5Hash("11","3",1024);
         System.out.println(md5Hash.toString());
+    }
+    @Test
+    public void selectById(){
+        String id="2122";
+        Patient patient=patientService.selectById(Integer.parseInt(id));
+        List<Patient> patientList=new ArrayList<>();
+        patientList.add(patient);
+        System.out.println(patientList);
 
     }
 }

@@ -23,14 +23,13 @@
 <body>
 <div class="wrap-container clearfix">
     <div class="column-content-detail">
-        <form class="layui-form" action="${pageContext.request.contextPath}/patient/search" method="post">
+        <form class="layui-form" action="${pageContext.request.contextPath}/patient/selectById" method="post">
             <div class="layui-form-item">
-
                 <div class="layui-inline">
-                    <input type="text" name="title" required lay-verify="required" placeholder="请输入身份证号" autocomplete="off" class="layui-input">
+                    <input type="text" name="ID" required lay-verify="required" placeholder="请输入身份证号" autocomplete="off" class="layui-input">
                 </div>
 
-                <button class="layui-btn layui-btn-normal" lay-submit="search">搜索</button>
+             <button  type="submit" class="layui-btn layui-btn-normal" lay-submit="search">搜索</button>
             </div>
         </form>
         <div class="layui-form" id="table-list">
@@ -40,9 +39,8 @@
                     <col class="hidden-xs" width="150">
                     <col class="hidden-xs" width="150">
                     <col class="hidden-xs" width="150">
+                    <col class="hidden-xs" width="200">
                     <col class="hidden-xs" width="150">
-                    <col class="hidden-xs" width="150">
-
                 </colgroup>
                 <thead>
                 <tr>
@@ -62,7 +60,6 @@
                     <td class="hidden-xs">${patient.id}</td>
                     <td class="hidden-xs">${patient.name}</td>
                     <td class=hidden-xs">${patient.gender==true ? "男":"女"}</td>
-                    <%--<td class="hidden-xs">${patient.registerTime}</td>--%>
                     <td class="hidden-xs"><fmt:formatDate value="${patient.registerTime}" type="date" pattern="yyyy-MM-dd HH:mm"/></td>
                     <td class="hidden-xs">${patient.telephone}</td>
                     <td class="hidden-xs">
@@ -74,24 +71,64 @@
                 </c:forEach>
                 </tbody>
             </table>
+
+
+
             <div class="page-wrap">
-                <ul class="pagination">
-                    <li class="disabled"><span>«</span></li>
-                    <li class="active"><span>1</span></li>
-                    <li>
-                        <a href="#">2</a>
-                    </li>
-                    <li>
-                        <a href="#">»</a>
-                    </li>
-                </ul>
+                <div style="position: relative;top: 25px">
+                    当前第${pageInfo.pageNum}页，共${pageInfo.pages}页，总共${pageInfo.size}条记录
+                </div>
+                <div style="position: relative;top: 25px">
+                    <ul class="pagination">
+                        <c:if test="${pageInfo.hasPreviousPage}">
+                            <li>
+                          <a href="${pageContext.request.contextPath}/patient/selectAll?pn=${pageInfo.prePage}"> <span>«</span>  </a>
+                            </li>
+                        </c:if>
+                        <c:if test="${pageInfo.hasPreviousPage==false}">
+                            <li class="disabled"><span>«</span></li>
+                        </c:if>
+
+
+                        <c:forEach items="${pageInfo.navigatepageNums}" var="pageNums">
+                            <c:if test="${pageNums == pageInfo.pageNum}">
+                                <li class="active">
+                                    <a href="${pageContext.request.contextPath}/patient/selectAll?pn=${pageNums}">${pageNums}</a>
+                                </li>
+                            </c:if>
+                            <c:if test="${pageNums != pageInfo.pageNum}">
+                                <li >
+                                    <a href="${pageContext.request.contextPath}/patient/selectAll?pn=${pageNums}">${pageNums}</a>
+                                </li>
+                            </c:if>
+                        </c:forEach>
+
+
+
+                        <c:if test="${pageInfo.hasNextPage}">
+                            <li>
+                            <a href="${pageContext.request.contextPath}/patient/selectAll?pn=${pageInfo.nextPage}">    <span>»</span>  </a>
+                            </li>
+                        </c:if>
+                        <c:if test="${!pageInfo.hasNextPage}">
+                            <li class="disabled"><span>»</span></li>
+                        </c:if>
+
+
+                    </ul>
+
+                </div>
+
+
             </div>
+
+
         </div>
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script src="${pageContext.request.contextPath}/static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
-<script src="${pageContext.request.contextPath}/static/admin/layui/lay/modules/jquery.js"></script>
+<script src="${pageContext.request.contextPath}/static/admin/js/jquery-1.8.3.min.js"></script>
 </body>
 
 </html>

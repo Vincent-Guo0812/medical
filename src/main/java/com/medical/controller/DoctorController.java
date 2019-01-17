@@ -56,4 +56,9 @@ public class DoctorController {
         request.getSession().removeAttribute("doctor");
         return "login";
     }
+
+    @RequestMapping("/toWelcome")
+    public String toWelcome(){
+        return "welcome";
+    }
 }

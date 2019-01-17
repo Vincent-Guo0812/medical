@@ -26,7 +26,7 @@
 				  <li class="layui-nav-item">
 				    <a href="javascript:;"><i class="iconfont">&#xe608;</i>病历管理</a>
 				    <dl class="layui-nav-child">
-				      <dd><a href="javascript:;" data-url="11" data-id='3' data-text="入诊登记"><span class="l-line"></span>入诊登记</a></dd>
+				      <dd><a href="javascript:;" data-url="${pageContext.request.contextPath}/patient/toVisitRegister" data-id='3' data-text="入诊登记"><span class="l-line"></span>入诊登记</a></dd>
 				      <dd><a href="javascript:;" data-url="danye-list.html" data-id='9' data-text="当前病历"><span class="l-line"></span>当前病历</a></dd>
 				    </dl>
 				  </li>
@@ -65,7 +65,7 @@
 					  <div class="layui-tab-content">
 					    <div class="layui-tab-item layui-show" style="background: #f5f5f5;">
 					    	<!--1-->
-					    	<iframe src="${pageContext.request.contextPath}/patient/toPatientRegister" width="100%" height="100%" name="iframe" scrolling="auto" class="iframe" framborder="0"></iframe>
+					    	<iframe src="${pageContext.request.contextPath}/toWelcome" width="100%" height="100%" name="iframe" scrolling="auto" class="iframe" framborder="0"></iframe>
 					    	<!--1end-->
 					    </div>
 					  </div>

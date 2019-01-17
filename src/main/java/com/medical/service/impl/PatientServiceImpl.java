@@ -41,4 +41,10 @@ public class PatientServiceImpl implements PatientService {
        List<Patient> patientList=patientMapper.selectByExample(example);
        return patientList;
     }
+
+    @Override
+    public Patient selectById(Integer id){
+        Patient patient=patientMapper.selectByPrimaryKey(id);
+        return patient;
+    }
 }

@@ -21,11 +21,11 @@
     <legend>病人登记</legend>
 </fieldset>
 
-<form class="layui-form" action="${pageContext.request.contextPath}/patient/register" method="post">
+<form class="layui-form" action="${pageContext.request.contextPath}/patient/register" method="post" onsubmit="return check()">
     <div class="layui-form-item">
         <label class="layui-form-label">身份证号</label>
         <div class="layui-input-inline">
-            <input type="text" name="id" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+            <input type="text" name="id" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input" id="id">
         </div>
     </div>
 
@@ -33,13 +33,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">姓名</label>
             <div class="layui-input-inline">
-                <input type="name" name="name" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="name" name="name" lay-verify="required" autocomplete="off" class="layui-input" id="name">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">联系方式</label>
             <div class="layui-input-inline">
-                <input type="text" name="telephone" lay-verify="phone" autocomplete="off" class="layui-input">
+                <input type="text" name="telephone" lay-verify="phone" autocomplete="off" class="layui-input" id="telephone">
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">性别</label>
         <div class="layui-input-inline">
-            <input type="radio" name="gender" value="true" title="男">
+            <input type="radio" name="gender" value="true" title="男" checked="checked">
             <input type="radio" name="gender" value="false" title="女">
         </div>
     </div>
@@ -56,7 +56,7 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">病史（没有填无）</label>
         <div class="layui-input-block"  style="width: 60%;height: 30%">
-            <textarea placeholder="请输入内容" name="medicalHistory" class="layui-textarea" style="height:90%"></textarea>
+            <textarea placeholder="请输入内容" name="medicalHistory" class="layui-textarea" style="height:90%" id="medicalHistory"></textarea>
         </div>
     </div>
 
@@ -70,6 +70,7 @@
     </div>
 </form>
 <script src="${pageContext.request.contextPath}/static/admin/layui/layui.js" charset="utf-8"></script>
+<script src="${pageContext.request.contextPath}/static/admin/js/jquery-1.8.3.min.js"></script>
 <script>
     layui.use(['form', 'layedit', 'laydate'], function(){
         var form = layui.form
@@ -86,6 +87,14 @@
         });
 
     });
+
+    function check() {
+        if( $("#id").val()==""  ||  $("#name").val()==""  || $("#telephone").val()=="" || $("#medicalHistory").val()=="" ){
+            alert("当前表单不能含空项！");
+            return false;
+        }
+        return true;
+    }
 </script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 

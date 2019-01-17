@@ -20,4 +20,12 @@ public interface PatientService {
      * @return
      **/
     public List<Patient> selectAll();
+
+    /**
+     * @Description  按照id查询数据
+     * @Date  2019/1/10 15:33
+     * @Param
+     * @return
+     **/
+    public Patient selectById(Integer id);
 }
