@@ -1,11 +1,11 @@
 import com.medical.dao.DepartmentMapper;
 import com.medical.dao.DoctorMapper;
-import com.medical.pojo.Department;
-import com.medical.pojo.Doctor;
-import com.medical.pojo.Patient;
+import com.medical.dao.RecordMapper;
+import com.medical.pojo.*;
 import com.medical.service.DepartmentService;
 import com.medical.service.DoctorService;
 import com.medical.service.PatientService;
+import com.sun.prism.impl.Disposer;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.junit.Test;
@@ -39,6 +39,8 @@ public class mytest {
     private DoctorService doctorService;
     @Autowired
     private PatientService patientService;
+    @Autowired
+    private RecordMapper recordMapper;
 
     @Test
     public void test(){
@@ -79,5 +81,14 @@ public class mytest {
         patientList.add(patient);
         System.out.println(patientList);
 
+    }
+
+    @Test
+    public void recordList(){
+        List<RecordDTO> recordList=recordMapper.recordList();
+        for(RecordDTO record:recordList){
+
+            System.out.println( record.toString());
+        }
     }
 }

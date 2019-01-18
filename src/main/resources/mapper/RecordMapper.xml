@@ -15,6 +15,21 @@
     <result column="filing_time" jdbcType="TIMESTAMP" property="filingTime" />
     <result column="recovery" jdbcType="BIT" property="recovery" />
   </resultMap>
+
+  <resultMap id="recordDTO" type="com.medical.pojo.RecordDTO">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="identity_id" jdbcType="INTEGER" property="identityId" />
+    <result column="visiting_time" jdbcType="TIMESTAMP" property="visitingTime" />
+  </resultMap>
+
+<select id="recordList" resultType="com.medical.pojo.RecordDTO">
+  select r.id  ,  r.identity_id  ,   r.visiting_time , d.name as department  , p.gender ,p.name as patientName
+  from
+  department d,  patient p, record r ,doctor doc
+  where
+  r.recovery='0' and r.department=d.id and p.id=r.identity_id and doc.id=r.doctor_id
+</select>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -107,7 +122,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.medical.pojo.Record">
+  <insert id="insert" parameterType="com.medical.pojo.Record" keyProperty="id" useGeneratedKeys="true">
     insert into record (id, identity_id, doctor_id, 
       department, visiting_time, symtom, 
       prescribe, hospitalized, bed_number, 

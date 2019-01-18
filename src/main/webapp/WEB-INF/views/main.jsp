@@ -1,4 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import="java.util.*,java.sql.*" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -8,8 +10,20 @@
 		<title>病历管理系统</title>
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/admin/layui/css/layui.css"/>
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/admin/css/admin.css"/>
+		<script type="text/javascript">
+            function showTime(){
+                nowtime=new Date();
+                year=nowtime.getFullYear();
+                month=nowtime.getMonth()+1;
+                date=nowtime.getDate();
+                document.getElementById("mytime").innerText=year+"年"+month+"月"+date+"日"+" "+nowtime.toLocaleTimeString();
+            }
+            setInterval("showTime()",1000);
+		</script>
+
 	</head>
 	<body>
+
 		<div class="main-layout" id='main-layout'>
 			<!--侧边栏-->
 			<div class="main-layout-side">
@@ -27,7 +41,7 @@
 				    <a href="javascript:;"><i class="iconfont">&#xe608;</i>病历管理</a>
 				    <dl class="layui-nav-child">
 				      <dd><a href="javascript:;" data-url="${pageContext.request.contextPath}/patient/toVisitRegister" data-id='3' data-text="入诊登记"><span class="l-line"></span>入诊登记</a></dd>
-				      <dd><a href="javascript:;" data-url="danye-list.html" data-id='9' data-text="当前病历"><span class="l-line"></span>当前病历</a></dd>
+				      <dd><a href="javascript:;" data-url="${pageContext.request.contextPath}/listNow" data-id='9' data-text="当前病历"><span class="l-line"></span>当前病历</a></dd>
 				    </dl>
 				  </li>
 				  <li class="layui-nav-item">
@@ -48,6 +62,7 @@
 						</a>
 					</div>
 					<ul class="layui-nav" lay-filter="rightNav">
+						<li class="layui-nav-item"> <a>系统时间： <span id="mytime"></span></a></li>
 					  <li class="layui-nav-item"><a href="javascript:;" data-url="email.html" data-id='4' data-text="邮件系统"><i class="iconfont">&#xe603;</i></a></li>
 					  <li class="layui-nav-item">
 					    <a href="javascript:;" data-url="admin-info.html" data-id='5' data-text="个人信息">${sessionScope.doctor.name}</a>

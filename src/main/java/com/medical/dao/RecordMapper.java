@@ -1,6 +1,7 @@
 package com.medical.dao;
 
 import com.medical.pojo.Record;
+import com.medical.pojo.RecordDTO;
 import com.medical.pojo.RecordExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -27,4 +28,6 @@ public interface RecordMapper {
     int updateByPrimaryKeySelective(Record record);
 
     int updateByPrimaryKey(Record record);
+
+    List<RecordDTO> recordList();
 }

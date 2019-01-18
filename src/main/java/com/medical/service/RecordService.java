@@ -1,6 +1,9 @@
 package com.medical.service;
 
 import com.medical.pojo.Record;
+import com.medical.pojo.RecordDTO;
+
+import java.util.List;
 
 /**
  * ClassName:   RecordService
@@ -16,4 +19,12 @@ public interface RecordService {
      * @return
      **/
     public void addRecord(Record record);
+
+    /**
+     * @Description  找出未归档的病历
+     * @Date  2019/1/18 19:52
+     * @Param
+     * @return
+     **/
+     public List<RecordDTO> recordList();
 }

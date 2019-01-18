@@ -2,9 +2,11 @@ package com.medical.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.medical.pojo.Patient;
-import com.medical.pojo.PatientExample;
-import com.medical.pojo.Record;
+import com.medical.dao.DepartmentMapper;
+import com.medical.dao.DoctorMapper;
+import com.medical.dao.PatientMapper;
+import com.medical.dao.RecordMapper;
+import com.medical.pojo.*;
 import com.medical.service.PatientService;
 import com.medical.service.RecordService;
 import org.apache.log4j.Logger;
@@ -47,6 +49,14 @@ public class PatientController {
     private PatientService patientService;
     @Autowired
     private  RecordService recordService;
+    @Autowired
+    private  RecordMapper recordMapper;
+    @Autowired
+    private PatientMapper patientMapper;
+    @Autowired
+    private DepartmentMapper departmentMapper;
+    @Autowired
+    private DoctorMapper doctorMapper;
 
     /**
      * @Description  跳转到病人登记页面
@@ -156,7 +166,7 @@ public class PatientController {
      * @return
      **/
     @RequestMapping("/recordRegister")
-    public String recordRegister(Record record){
+    public String recordRegister(Record record,Model model){
         record.setVisitingTime(new Date());
         record.setRecovery(false);
         try{
@@ -165,7 +175,17 @@ public class PatientController {
         catch(Exception e){
             e.printStackTrace();
         }
-        return "redirect:/toWelcome";
+        int id=record.getId();
+        int patientId=record.getIdentityId();
+        Patient patient=patientMapper.selectByPrimaryKey(patientId);
+        Record record1=recordMapper.selectByPrimaryKey(id);
+        Department department=departmentMapper.selectByPrimaryKey(record1.getDepartment());
+        Doctor doctor=doctorMapper.selectByPrimaryKey(Integer.parseInt(record1.getDoctorId()));
+        model.addAttribute("record",record1);
+        model.addAttribute("patient",patient);
+        model.addAttribute("department",department);
+        model.addAttribute("doctor",doctor);
+        return "recordDetail";
     }
 
 
