@@ -5,6 +5,7 @@ import com.medical.pojo.*;
 import com.medical.service.DepartmentService;
 import com.medical.service.DoctorService;
 import com.medical.service.PatientService;
+import com.medical.service.RecordService;
 import com.sun.prism.impl.Disposer;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -16,7 +17,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +45,8 @@ public class mytest {
     private PatientService patientService;
     @Autowired
     private RecordMapper recordMapper;
+    @Autowired
+    private RecordService recordService;
 
     @Test
     public void test(){
@@ -90,5 +96,27 @@ public class mytest {
 
             System.out.println( record.toString());
         }
+    }
+
+    @Test
+    public void ss(){
+           String date="2019-01-16 - 2019-01-18";
+        String s1=date.substring(0,10);
+        String s2=date.substring(13,23);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        Date date1=new Date(),date2=new Date();
+        try{
+            date1=sdf.parse(s1);
+            date2=sdf.parse(s2);
+        }
+        catch(ParseException e){
+            e.printStackTrace();
+        }
+      Integer id=1;
+        List<RecoveryDTO> recoveryDTOList=recordMapper.recoveryByIdOrDate(id,date1,date2);
+        for(RecoveryDTO recoveryDTO:recoveryDTOList){
+            System.out.println(recoveryDTO.toString());
+        }
+
     }
 }

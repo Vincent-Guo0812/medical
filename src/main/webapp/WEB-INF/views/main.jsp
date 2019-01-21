@@ -45,10 +45,10 @@
 				    </dl>
 				  </li>
 				  <li class="layui-nav-item">
-				    <a href="javascript:;"><i class="iconfont">&#xe604;</i>归档管理</a>
+				    <a href="javascript:;" data-url="${pageContext.request.contextPath}/alreadyRecovery" data-id='10' data-text="归档管理"><i class="iconfont">&#xe604;</i>归档管理</a>
 				  </li>
 				   <li class="layui-nav-item">
-				    <a href="javascript:;"><i class="iconfont">&#xe60c;</i>个人中心</a>
+				    <a href="javascript:;" data-url="${pageContext.request.contextPath}/toPersonalCenter" data-id="11" data-text="个人中心"><i class="iconfont">&#xe60c;</i>个人中心</a>
 				  </li>
 				</ul>
 			</div>

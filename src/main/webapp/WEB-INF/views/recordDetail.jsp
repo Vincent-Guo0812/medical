@@ -59,8 +59,8 @@
         <div class="layui-inline">
             <label class="layui-form-label">性别</label>
             <div class="layui-input-inline" id="genderCheck">
-                <input type="radio" name="gender"  value="true" title="男"  ${patient.gender==true?"checked":""} lay-filter="aaa">
-                <input type="radio" name="gender"  value="false" title="女" ${patient.gender==false?"checked":""} lay-filter="aaa">
+                <input type="radio" disabled="disabled" name="gender"  value="true" title="男"  ${patient.gender==true?"checked":""} lay-filter="aaa">
+                <input type="radio" name="gender" disabled="disabled" value="false" title="女" ${patient.gender==false?"checked":""} lay-filter="aaa">
             </div>
         </div>
     </div>

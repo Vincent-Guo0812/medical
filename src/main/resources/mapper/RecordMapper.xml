@@ -30,6 +30,30 @@
   r.recovery='0' and r.department=d.id and p.id=r.identity_id and doc.id=r.doctor_id
 </select>
 
+  <select id="fileManage" resultType="com.medical.pojo.RecoveryDTO">
+  select r.id  ,  r.identity_id  ,   r.visiting_time , d.name as department  , p.gender ,p.name as patientName ,r.filing_time as filingTime
+  from
+  department d,  patient p, record r ,doctor doc
+  where
+  r.recovery='1' and r.department=d.id and p.id=r.identity_id and doc.id=r.doctor_id
+</select>
+
+  <select id="recoveryByIdOrDate" resultType="com.medical.pojo.RecoveryDTO">
+      select r.id  ,  r.identity_id  ,   r.visiting_time , d.name as department  , p.gender ,p.name as patientName ,r.filing_time as filingTime
+  from
+  department d,  patient p, record r ,doctor doc
+  where
+  r.recovery='1' and r.department=d.id and p.id=r.identity_id and doc.id=r.doctor_id and r.identity_id=#{id} and r.visiting_time between #{date1} and #{date2}
+  </select>
+
+  <select id="recordForOne" resultType="com.medical.pojo.RecoveryDTO">
+      select r.id  ,  r.identity_id  ,   r.visiting_time , d.name as department  , p.gender ,p.name as patientName ,r.filing_time as filingTime
+  from
+  department d,  patient p, record r ,doctor doc
+  where
+ r.recovery='1' and r.department=d.id and p.id=r.identity_id and doc.id=r.doctor_id and r.identity_id=#{id}
+  </select>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
