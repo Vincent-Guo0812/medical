@@ -8,7 +8,6 @@ import com.medical.dao.PatientMapper;
 import com.medical.dao.RecordMapper;
 import com.medical.pojo.*;
 import com.medical.service.RecordService;
-import com.sun.xml.internal.ws.resources.HttpserverMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
