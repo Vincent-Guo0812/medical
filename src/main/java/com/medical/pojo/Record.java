@@ -1,8 +1,9 @@
 package com.medical.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Record {
+public class Record implements Serializable {
     private Integer id;
 
     private Integer identityId;

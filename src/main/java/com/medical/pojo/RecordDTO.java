@@ -1,5 +1,6 @@
 package com.medical.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  * Author:    wenqi.guo
  * Date:      2019/1/18 19:35
  */
-public class RecordDTO {
+public class RecordDTO implements Serializable {
     private Integer id;
 
     private Integer identityId;

@@ -7,6 +7,7 @@ import com.medical.dao.DoctorMapper;
 import com.medical.dao.PatientMapper;
 import com.medical.dao.RecordMapper;
 import com.medical.pojo.*;
+import com.medical.redis.RedisUtil;
 import com.medical.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +49,8 @@ public class RecordController {
     private PatientMapper patientMapper;
     @Autowired
     private RecordService recordService;
+    @Autowired
+    private RedisUtil redisUtil;
 
 
     /**
@@ -87,8 +91,20 @@ public class RecordController {
      **/
     @RequestMapping("/listNow")
     public String listNow(Model model, @RequestParam(value="pn",defaultValue = DEFAULT_VALUE)Integer pn){
+        List<RecordDTO> recordDTOList=new ArrayList<RecordDTO>();
+        // redis没缓存时，从数据库中获取,并将数据存入缓存
+        if(redisUtil.lGetListSize("recordDTOList") == 0){
+           recordDTOList=recordMapper.recordList();
+           for(RecordDTO recordDTO:recordDTOList){
+              redisUtil.lSet("recordDTOList",recordDTO);
+           }
+        }else{
+            // redis 中有缓存，直接从缓存中取
+            Object object= redisUtil.lGet("recordDTOList",0,-1);
+            recordDTOList=(List<RecordDTO>) object;
+        }
+
         PageHelper.startPage(pn,PAGE_SIZE);
-        List<RecordDTO> recordDTOList=recordMapper.recordList();
         PageInfo pageInfo=new PageInfo(recordDTOList,NAVIGATE_PAGES);
         model.addAttribute("recordDTOList",recordDTOList);
         model.addAttribute("pageInfo",pageInfo);

@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
@@ -16,7 +17,7 @@
     </context:component-scan>
     <!--Spring的配置文件，这里主要配置和业务逻辑有关的-->
     <!--数据源，事务控制。。-->
-    <context:property-placeholder location="classpath:dbconfig.properties"/>
+    <context:property-placeholder location="classpath:dbconfig.properties,classpath:redis.properties"/>
     <bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
         <property name="driverClass" value="${jdbc.driverClass}"></property>
@@ -38,6 +39,32 @@
         <!--扫描所有dao接口的实现，加入到ioc容器中-->
         <property name="basePackage" value="com.medical.dao"></property>
     </bean>
+
+
+    <!--设置连接池-->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="maxTotal" value="${redis.maxTotal}" />
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+        <property name="testOnReturn" value="${redis.testOnReturn}" />
+    </bean>
+    <!--设置链接属性-->
+    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:hostName="${redis.host}"
+          p:port="${redis.port}"
+          p:password="${redis.password}"
+          p:pool-config-ref="poolConfig"
+          p:timeout="100000"/>
+    <!-- Jedis模板配置  -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory"   ref="connectionFactory" />
+    </bean>
+    <!-- 自定义redis工具类 -->
+<bean id="redisUtil" class="com.medical.redis.RedisUtil">
+    <property name="redisTemplate" ref="redisTemplate"/>
+
+</bean>
 
 
 

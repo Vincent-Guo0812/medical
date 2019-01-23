@@ -1,6 +1,8 @@
 package com.medical.pojo;
 
-public class Department {
+
+
+public class Department  {
     private Integer id;
 
     private String name;

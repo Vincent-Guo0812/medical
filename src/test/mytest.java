@@ -2,6 +2,7 @@ import com.medical.dao.DepartmentMapper;
 import com.medical.dao.DoctorMapper;
 import com.medical.dao.RecordMapper;
 import com.medical.pojo.*;
+import com.medical.redis.RedisUtil;
 import com.medical.service.DepartmentService;
 import com.medical.service.DoctorService;
 import com.medical.service.PatientService;
@@ -12,6 +13,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ui.Model;
@@ -47,6 +49,8 @@ public class mytest {
     private RecordMapper recordMapper;
     @Autowired
     private RecordService recordService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Test
     public void test(){
@@ -91,11 +95,15 @@ public class mytest {
 
     @Test
     public void recordList(){
-        List<RecordDTO> recordList=recordMapper.recordList();
-        for(RecordDTO record:recordList){
+       Department department=new Department();
+      department.setId(8);
+       department.setName("sas");
+       redisUtil.set("dep",department);
+        Department department1=(Department) redisUtil.get("dep");
+        System.out.println(department1.getName());
 
-            System.out.println( record.toString());
-        }
+
+
     }
 
     @Test
@@ -119,4 +127,6 @@ public class mytest {
         }
 
     }
+
+
 }
